@@ -9,8 +9,8 @@ An experiment with d3.js using data from our solar system and the potentially ha
 * Click the planets for more information
 
 #### Notes
-Orbit sizes and periods are scaled to each other (some liberties taken with Jupiter's orbit)
-Planet sizes are scaled to each other
-Moon sizes are scaled to each other
-Trappist 1 data taken from [here](http://www.trappist.one/), converted into km.
-Solar system data taken from [here](https://nssdc.gsfc.nasa.gov/planetary/factsheet/), converted into km.
+* Orbit sizes and periods are scaled to each other (some liberties taken with Jupiter's orbit)
+* Planet sizes are scaled to each other
+* Moon sizes are scaled to each other
+* Trappist 1 data taken from [here](http://www.trappist.one/), converted into km.
+* Solar system data taken from [here](https://nssdc.gsfc.nasa.gov/planetary/factsheet/), converted into km.
