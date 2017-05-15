@@ -1,8 +1,8 @@
 # Trappist 1
 
-An experiment with d3.js using data from our solar system and the potentially habitable [exoplanetary system]("http://www.trappist.one/"). It is designed as an overlay of the two systems for a clean visual comparison.
+An experiment with d3.js using data from our solar system and the potentially habitable ["http://www.trappist.one/"](exoplanetary system). It is designed as an overlay of the two systems for a clean visual comparison.
 
-# [Have some fun!]("https://nllho.github.io/trappist1/")
+# ["https://nllho.github.io/trappist1/"](Live demo)
 
 ## Interaction
 
