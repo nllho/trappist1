@@ -1,0 +1,35 @@
+body {
+        text-align:center;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      #Trappist-1 {
+        stroke: #ffce2d;
+        fill: transparent;
+        opacity: 1;
+      }
+
+      #Sun {
+        stroke: #ffce2d;
+        fill: transparent;
+        opacity: 1;
+      }
+
+      .orbit {
+        stroke: #ccc;
+        fill: transparent;
+      }
+
+      .planet {
+        stroke: #666;
+        fill: #fff;
+      }
+
+      .moon {
+        stroke: #666;
+        fill: #fff;
+      }
+
+      .label {
+        fill: #666;
+      }

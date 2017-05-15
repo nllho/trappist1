@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <svg width="100%" height="100%" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMin meet"></svg>
+    <link rel="stylesheet" href="/assets/styles.css">
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+  </head>
+  <body>
+    <script>
+
+    var planets;
+
+    d3.json("/assets/planetdata.json", function(data) {
+      console.log(data);
+      planets=data;
+      drawOrbit();
+    });
+
+    function drawOrbit() {
+
+      // set up svg canvas
+      var x = 250;
+      var y = 500;
+      var svg = d3.select("svg");
+
+
+      // container for svg elements
+      var container = svg.append("g")
+          .attr("id", "orbit_container")
+          .attr("transform", "translate(" + x + "," + y + ")");
+
+      // scale data for visual intuition
+      planetRadiusScale = d3.scaleLinear().domain([2439.7,7180.1,69911]).range([2,6.5,21]);
+      planetOrbitScale = d3.scaleLinear().domain([1.65,8.98,57.9,778.6]).range([80,104,223,500]).clamp(true);
+      moonRadiusScale = d3.scaleLinear().domain([1737.1,2410.3]).range([1,2]);
+      moonOrbitScale = d3.scaleLinear().domain([0.384,0.422,0.671,1.07,1.833]).range([15,50,60,68,81]).clamp(true);
+
+      // bind planet data to svg elements
+      container.selectAll("g.planet")
+      .data(planets)
+      .enter()
+      .append("g")
+      .attr("class", "planet_cluster").each(function(d, i) {
+
+        // draw planetary orbit circles
+        d3.select(this)
+        .append("circle")
+        .attr("class", "orbit")
+        .attr("r", function(d) {return planetOrbitScale(d.distance)});
+
+        // bind moon data to svg elements
+        d3.select(this)
+        .append("g")
+          .attr("transform", "translate(" + planetOrbitScale(d.distance) + ",0)")
+        .selectAll("g.moon")
+        .data(d.moons)
+        .enter()
+        .append("g")
+          .attr("class", "moon_cluster").each(function(d, i) {
+
+            // draw moon orbit circles
+            d3.select(this)
+            .append("circle")
+            .attr("class", "orbit")
+            .attr("r", function(d) {return moonOrbitScale(d.distance)})
+
+            // draw moons
+            d3.select(this)
+            .append("circle")
+            .attr("r", function(d) {return moonRadiusScale(d.radius)})
+            .attr("cx",function(d) {return moonOrbitScale(d.distance)})
+            .attr("cy", 0)
+            .attr("class", "moon")
+            .on("mouseover", moonfreeze)
+            .on("mousedown",showfact)
+            .on("mouseout", moonthaw)
+          });
+
+        // draw planets
+        d3.select(this)
+        .append("g")
+        .attr("class","planet_node")
+        .on("mouseover", planetfreeze)
+        .on("mousedown", showfact)
+        .on("mouseout", planetthaw)
+          .append("circle")
+          .attr("class", "planet")
+          .attr("r", function(d) {return planetRadiusScale(d.radius)})
+          .attr("cx", function(d) {return planetOrbitScale(d.distance)})
+          .attr("cy", 0);
+
+      })
+      .append("g")
+      .attr("id","canvas")
+      .call(d3.drag() 
+        .on("drag", dragged)); // add pan function
+
+    // add zoom function
+    svg.call(d3.zoom()
+    .scaleExtent([1 / 2, 8])
+    .on("zoom", zoomed)); 
+
+    function zoomed() {
+    container.attr("transform", d3.event.transform);
+    }
+
+    function dragged(d) {
+    d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+    }
+
+    // animates svg elements by rotating planet/moon clusters
+    var tick=0;
+    function startMotion() {
+      tickInterval = setInterval(function(){
+        tick++;
+        svg.selectAll(".planet_cluster, .moon_cluster").attr("transform", function(d) {
+          return "rotate(" + (d.phi0 + (tick / d.period)) + ")"; // rotation = initial posn on circle + tick change * speed
+        });
+      }, 10); // animation smoothness: execute rotation every 10ms
+    }
+
+    // draw sun
+    container.append("circle")
+    .attr("r", 63)
+    .attr("cx", 0)
+    .attr("cy", 0)
+    .attr("id", "Sun")
+    .on("mouseover", starfreeze) // assign interactive functions
+    .on("mousedown", 
+          function () {
+          d3.selectAll("text.label").remove()
+
+          d3.select(orbit_container)
+            .selectAll(".orbit").style("stroke", "#f2f2f2")
+
+          mouse_x = d3.mouse(Sun)[0]
+          mouse_y = d3.mouse(Sun)[1]
+
+          var zoomedSize = orbit_container.getBoundingClientRect().width
+          var scale = zoomedSize/900
+
+          d3.select(orbit_container)
+            .append("text")
+            .text("Sun: About 11x as big and 9x as massive as Trappist-1.")
+            .style("font-size", "16")
+            .style("font-size", function() {return 25*(1/scale) + "px"})
+            .attr("x", mouse_x+3)
+            .attr("y", mouse_y+6)
+            .attr("class","label");
+          }
+      )
+    .on("mouseout", starthaw);
+
+    // draw trappist-1
+    container.append("circle")
+    .attr("r", 22)
+    .attr("cx", 0)
+    .attr("cy", 0)
+    .attr("id", "Trappist-1")
+    .on("mouseover", starfreeze) // assign interactive functions
+    .on("mousedown", 
+          function () {
+          d3.selectAll("text.label").remove()
+
+          d3.select(orbit_container)
+            .selectAll(".orbit").style("stroke", "#f2f2f2")
+
+          mouse_x = d3.mouse(Sun)[0]
+          mouse_y = d3.mouse(Sun)[1]
+
+          var zoomedSize = orbit_container.getBoundingClientRect().width
+          var scale = zoomedSize/900
+
+          d3.select(orbit_container)
+            .append("text")
+            .text("Trappist-1: A small, cool, and dim red dwarf star, located 39 light years away.")
+            .style("font-size", "16")
+            .style("font-size", function() {return 25*(1/scale) + "px"})
+            .attr("x", mouse_x+3)
+            .attr("y", mouse_y+6)
+            .attr("class","label");
+          }
+      )
+    .on("mouseout", starthaw);
+
+    // start animation
+    startMotion();
+
+    // hover effect for planets
+    function planetfreeze(d) {
+      clearInterval(tickInterval) // pause animation
+
+      // get mouse location
+      mouse_x = d3.mouse(Sun)[0]
+      mouse_y = d3.mouse(Sun)[1]
+
+      // highlight hovered planet
+      d3.select(this)
+      .selectAll(".planet")
+      .style("stroke", "#87CEFA").style("stroke-width", 1)
+
+      // find scale of current element
+      var zoomedSize = orbit_container.getBoundingClientRect().width
+      var scale = zoomedSize/900
+
+      // display label for hovered planet
+      d3.select(orbit_container)
+      .append("text")
+        .text(d.planet)
+        .style("font-size", "16")
+        .style("font-size", function() {return 25*(1/scale) + "px"}) // scale text size by zoom scale
+        .attr("x", mouse_x+3)
+        .attr("y", mouse_y-3)
+        .attr("class","label")
+    }
+
+    // reset elements upon hover exit
+    function planetthaw(d) { 
+      startMotion() // start animation
+
+      d3.select(orbit_container)
+        .selectAll(".orbit").style("stroke", "#ccc")
+
+      d3.select(orbit_container)
+        .selectAll(".planet").style("stroke", "#666")
+
+      d3.select(orbit_container)
+        .selectAll(".moon").style("stroke", "#666")
+
+      d3.selectAll("text.label").remove() 
+      d3.select(this).selectAll(".planet").style("stroke", "#666");
+    }
+
+    // can freeze orbits if it's too difficult to catch fast planets for hover effect
+    function orbitfreeze(d) {
+      clearInterval(tickInterval);
+    }
+
+    // hover effect for moons
+    function moonfreeze(d) {
+      clearInterval(tickInterval)
+
+      mouse_x = d3.mouse(Sun)[0]
+      mouse_y = d3.mouse(Sun)[1]
+
+      d3.select(this)
+      .style("stroke", "#87CEFA").style("stroke-width", 1)
+
+      var zoomedSize = orbit_container.getBoundingClientRect().width
+      var scale = zoomedSize/900
+
+      d3.select(orbit_container)
+      .append("text")
+        .text(d.name)
+        .style("font-size", "16")
+        .style("font-size", function() {return 25*(1/scale) + "px"})
+        .attr("x", mouse_x+3)
+        .attr("y", mouse_y-3)
+        .attr("class","label");
+    }
+
+    // reset elements upon hover exit
+    function moonthaw(d) { 
+      startMotion()
+
+      d3.select(orbit_container)
+        .selectAll(".orbit").style("stroke", "#ccc")
+
+      d3.select(orbit_container)
+        .selectAll(".planet").style("stroke", "#666")
+
+      d3.select(orbit_container)
+        .selectAll(".moon").style("stroke", "#666")
+
+      d3.selectAll("text.label").remove()
+      d3.select(this).style("stroke", "#666");
+    }
+
+    // hover effect for stars
+    function starfreeze(d) {
+      clearInterval(tickInterval)
+
+      mouse_x = d3.mouse(Sun)[0]
+      mouse_y = d3.mouse(Sun)[1]
+      
+      var zoomedSize = orbit_container.getBoundingClientRect().width
+      var scale = zoomedSize/900
+
+      d3.select(this)
+      .style("fill", "#ffce2d")
+      .style("opacity", "0.2")
+
+      d3.select(orbit_container)
+      .append("text")
+        .text(this.id)
+        .style("font-size", "16")
+        .style("font-size", function() {return 25*(1/scale) + "px"})
+        .attr("x", mouse_x+3)
+        .attr("y", mouse_y-3)
+        .attr("class","label");
+    }
+
+    // reset elements upon hover exit
+    function starthaw(d) { 
+      startMotion()
+      d3.selectAll("text.label").remove()
+
+      d3.select(orbit_container)
+        .selectAll(".orbit").style("stroke", "#ccc")
+
+      d3.select(orbit_container)
+        .selectAll(".planet").style("stroke", "#666")
+
+      d3.select(this)
+        .style("fill","transparent")
+        .style("opacity", "1");
+    }
+
+    // display a fun fact on planet or moon click
+    function showfact(d) {
+      d3.selectAll("text.label").remove()
+
+      d3.select(orbit_container)
+        .selectAll(".orbit").style("stroke", "#f2f2f2")
+
+      d3.select(orbit_container)
+        .selectAll(".planet").style("stroke", "#f2f2f2")
+
+      d3.select(orbit_container)
+        .selectAll(".moon").style("stroke", "#f2f2f2")
+
+      d3.select(this)
+      .selectAll(".planet")
+      .style("stroke", "#87CEFA").style("stroke-width", 1)
+
+      mouse_x = d3.mouse(Sun)[0]
+      mouse_y = d3.mouse(Sun)[1]
+
+      var zoomedSize = orbit_container.getBoundingClientRect().width
+      var scale = zoomedSize/900
+
+      d3.select(orbit_container)
+      .append("text")
+        .text(d.fact)
+        .style("font-size", "16")
+        .style("font-size", function() {return 25*(1/scale) + "px"})
+        .attr("x", mouse_x+3)
+        .attr("y", mouse_y-3)
+        .attr("class","label");
+    }
+
+    }
+    </script>
+  </body>
+</html>

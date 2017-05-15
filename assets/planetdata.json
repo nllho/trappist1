@@ -1,0 +1,152 @@
+[
+    {
+        "planet": "Jupiter",
+        "radius": 69911,
+        "distance": 778.6,
+        "period": 4331,
+        "phi0": 315,
+        "fact": "Jupiter: It's only slightly smaller than the Trappist-1 star.",
+        "moons": [
+          {
+            "name": "Callisto",
+            "radius": 2410.3,
+            "distance": 1.833,
+            "period": 16.7,
+            "phi0": 315,
+            "fact": "Callisto: It's orbit is between that of Trappist-1 B and C."
+          },
+          {
+            "name": "Ganymede",
+            "radius": 2634.1,
+            "distance": 1.07,
+            "period": 7.2,
+            "phi0": 125,
+            "fact": "Ganymede: The largest of Jupiter's moons."
+          },
+          {
+            "name": "Europa",
+            "radius": 1560.8,
+            "distance": 0.671,
+            "period": 3.6,
+            "phi0": 95,
+            "fact": "Europa: It's orbit is close to the size of our sun."
+          },
+          {
+            "name": "Io",
+            "radius": 1821.6,
+            "distance": 0.422,
+            "period": 1.8,
+            "phi0": 25,
+            "fact": "Io: Just a bit bigger than our moon."
+          }
+        ]
+    },
+    {
+        "planet": "Mars",
+        "radius": 3389.5,
+        "distance": 227.9,
+        "period": 687,
+        "phi0": 235,
+        "fact": "Mars: About half the size of Trappist-1 F.",
+        "moons": []
+        },
+    {
+        "planet": "Earth",
+        "radius": 6371,
+        "distance": 149.6,
+        "period": 365.2,
+        "phi0": 135,
+        "fact": "Earth: The Trappist-1 planets are within 15% of our home planet's size.",
+        "moons": [
+          {
+            "name": "Moon",
+            "radius": 1731.1,
+            "distance": 0.384,
+            "period": 27.3,
+            "phi0": 15,
+            "fact": "Moon: It has the smallest orbit of any object depicted here."
+          }
+        ]
+    },
+    {
+        "planet": "Venus",
+        "radius": 6051.8,
+        "distance": 108.2,
+        "period": -224.7,
+        "phi0": 135,
+        "fact": "Venus: Similar to Earth in mass and size, but with a thick carbon dioxide atmosphere.",
+        "moons": []
+        },
+    {
+        "planet": "Mercury",
+        "radius": 2439.7,
+        "distance": 57.9,
+        "period": 88,
+        "phi0": 35,
+        "fact": "Mercury: It has an orbit close to that of Callisto's orbit around Jupiter.",
+        "moons": []
+        },
+    {
+        "planet": "H",
+        "radius": 4810.1,
+        "distance": 8.98,
+        "period": 18.76,
+        "phi0": 195,
+        "fact": "H: It's orbit is more than six times smaller than Mercury's.",
+        "moons": []
+        },
+    {
+        "planet": "G",
+        "radius": 7180.1,
+        "distance": 6.73,
+        "period": 12.35,
+        "phi0": 75,
+        "fact": "G: In the habitable zone! The largest Trappist-1 planet.",
+        "moons": []
+        },
+    {
+        "planet": "F",
+        "radius": 6657.7,
+        "distance": 5.54,
+        "period": 9.21,
+        "phi0": 25,
+        "fact": "F: In the habitable zone! Receives similar radiation to Mars.",
+        "moons": []
+        },
+    {
+        "planet": "E",
+        "radius": 5848.6,
+        "distance": 4.19,
+        "period": 6.01,
+        "phi0": 165,
+        "fact": "E: In the habitable zone! The most likely to have liquid water.",
+        "moons": []
+        },
+    {
+        "planet": "D",
+        "radius": 4918.4,
+        "distance": 3.14,
+        "period": 4.05,
+        "phi0": 115,
+        "fact": "D: Likely too warm to support liquid water.",
+        "moons": []
+        },
+    {
+        "planet": "C",
+        "radius": 6727.8,
+        "distance": 2.24,
+        "period": 2.42,
+        "phi0": 205,
+        "fact": "C: Receives similar radiation levels to Venus.",
+        "moons": []
+        },
+    {
+        "planet": "B",
+        "radius": 6918.9,
+        "distance": 1.65,
+        "period": 1.51,
+        "phi0": 245,
+        "fact": "B: Orbits in only 36 hours - the shortest orbital period here.",
+        "moons": []
+        }
+]
