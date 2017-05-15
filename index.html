@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8">
     <svg width="100%" height="100%" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMin meet"></svg>
-    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="/trappist1/assets/styles.css">
     <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
   </head>
   <body>
@@ -10,7 +10,7 @@
 
     var planets;
 
-    d3.json("/assets/planetdata.json", function(data) {
+    d3.json("/trappist1/assets/planetdata.json", function(data) {
       console.log(data);
       planets=data;
       drawOrbit();
